@@ -1,7 +1,11 @@
 require 'oystercard'
+require 'journey'
 
 describe Oystercard do
   let(:card) {Oystercard.new}
+  let(:journey) {Journey.new}
+  let(:station) { double :station }
+  let(:station2) { double :station2 }
 
   context "balance on card" do
     it "has a balance" do
@@ -17,27 +21,6 @@ describe Oystercard do
       expect{ card.top_up(100) }.to raise_error("Maximum balance is £#{Oystercard::BALANCE_LIMIT}.")
     end
 
-    it "allows you to deduct money from the card" do
-      card.deduct(5)
-      expect(card.balance).to eq(-5)
-    end
-
-  end
-
-  context "is the card in use?" do
-    it "the card is in use" do
-      expect(card.in_journey?).to eq false
-    end
-
-    it "allows you to touch in to start a journey" do
-      card.touch_in
-      expect(card.in_journey?).to eq true
-    end
-
-    it "allows you to touch out to end a journey" do
-      card.touch_out
-      expect(card.in_journey?).to eq false
-    end
   end
 
 end

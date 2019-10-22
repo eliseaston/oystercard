@@ -1,8 +1,9 @@
 class Oystercard
 
   BALANCE_LIMIT = 90
+  MIN_BALANCE = 1
 
-  attr_reader :balance
+  attr_reader :balance, :origin_station, :dest_station, :journey_history
 
   def initialize
     @balance = 0
@@ -16,20 +17,10 @@ class Oystercard
     @balance = new_balance
   end
 
+# private
+
   def deduct(debit)
     @balance -= debit
-  end
-
-  def in_journey?
-    @in_journey
-  end
-
-  def touch_in
-    @in_journey = true
-  end
-
-  def touch_out
-    @in_journey = false
   end
 
 end
