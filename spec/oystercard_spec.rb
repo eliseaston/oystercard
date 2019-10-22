@@ -48,26 +48,25 @@ describe Oystercard do
   end
 
   context "journey details" do
-    it "remembers the station it touched in at" do
-      card.top_up(Oystercard::MIN_BALANCE)
-      card.touch_in(station)
-      expect(card.origin_station).to eq(station)
-    end
-
-    it "sets the origin station nil when touched out" do
-      card.top_up(Oystercard::MIN_BALANCE)
-      card.touch_in(station)
-      card.touch_out(station2)
-      expect(card.origin_station).to eq(nil)
-    end
-
     it "has an empty journey history when card is spawned" do
       expect(card.journey_history).to be_empty
     end
 
+   before(:each) do
+     card.top_up(Oystercard::MIN_BALANCE)
+     card.touch_in(station)
+   end
+
+    it "remembers the station it touched in at" do
+      expect(card.origin_station).to eq(station)
+    end
+
+    it "sets the origin station nil when touched out" do
+      card.touch_out(station2)
+      expect(card.origin_station).to eq(nil)
+    end
+
     it "has the origin and destination stations of one trip recorded" do
-      card.top_up(Oystercard::MIN_BALANCE)
-      card.touch_in(station)
       card.touch_out(station2)
       expect(card.journey_history).to eq({station => station2})
     end
