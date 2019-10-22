@@ -21,13 +21,13 @@ class Journey
     card.deduct(1)
     @dest_station = dest_station
     save_journey_history
-    @origin_station = nil
   end
 
   private
 
   def save_journey_history
     @journey_history.store(@origin_station, @dest_station)
+    @origin_station = nil
   end
 
 end
