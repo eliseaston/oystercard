@@ -22,6 +22,12 @@ describe Oystercard do
       expect(card.balance).to eq(-5)
     end
 
+    it "gets blocked by the gateline if the balance is below minimum" do
+      expect{ card.touch_in}.to raise_error("Access denied. Card balance below min.")
+    end
+
+
+
   end
 
   context "is the card in use?" do
@@ -30,6 +36,7 @@ describe Oystercard do
     end
 
     it "allows you to touch in to start a journey" do
+      card.top_up(Oystercard::MIN_BALANCE)
       card.touch_in
       expect(card.in_journey?).to eq true
     end
