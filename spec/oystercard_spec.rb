@@ -3,6 +3,7 @@ require 'oystercard'
 describe Oystercard do
   let(:card) {Oystercard.new}
   let(:station) { double :station }
+  let(:station2) { double :station2 }
 
   context "balance on card" do
     it "has a balance" do
@@ -23,7 +24,7 @@ describe Oystercard do
     end
 
     it "reduces the card balance by 1.00 when card touches out" do
-      expect{ card.touch_out}.to change{card.balance}.by(-1)
+      expect{ card.touch_out(station2)}.to change{card.balance}.by(-1)
     end
 
 
@@ -40,9 +41,9 @@ describe Oystercard do
       expect(card.in_journey?).to eq true
     end
 
-    xit "allows you to touch out to end a journey" do
-      card.touch_out
-      expect(card.in_journey?).to eq false
+    it "remembers the station it touched out at" do
+      card.touch_out(station2)
+      expect(card.dest_station).to eq(station2)
     end
   end
 
@@ -56,8 +57,19 @@ describe Oystercard do
     it "sets the origin station nil when touched out" do
       card.top_up(Oystercard::MIN_BALANCE)
       card.touch_in(station)
-      card.touch_out
+      card.touch_out(station2)
       expect(card.origin_station).to eq(nil)
+    end
+
+    it "has an empty journey history when card is spawned" do
+      expect(card.journey_history).to be_empty
+    end
+
+    it "has the origin and destination stations of one trip recorded" do
+      card.top_up(Oystercard::MIN_BALANCE)
+      card.touch_in(station)
+      card.touch_out(station2)
+      expect(card.journey_history).to eq({station => station2})
     end
 
   end
