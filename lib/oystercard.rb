@@ -3,7 +3,7 @@ class Oystercard
   BALANCE_LIMIT = 90
   MIN_BALANCE = 1
 
-  attr_reader :balance
+  attr_reader :balance, :origin_station
 
   def initialize
     @balance = 0
@@ -20,17 +20,17 @@ class Oystercard
 
 
   def in_journey?
-    @in_journey
+    @origin_station == nil ? false : true
   end
 
-  def touch_in
+  def touch_in(origin_station)
     fail "Access denied. Card balance below min." unless @balance >= MIN_BALANCE
-    @in_journey = true
+    @origin_station = origin_station
   end
 
   def touch_out
     deduct(1)
-    @in_journey = false
+    @origin_station = nil
   end
 
 

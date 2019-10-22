@@ -2,6 +2,7 @@ require 'oystercard'
 
 describe Oystercard do
   let(:card) {Oystercard.new}
+  let(:station) { double :station }
 
   context "balance on card" do
     it "has a balance" do
@@ -18,7 +19,7 @@ describe Oystercard do
     end
 
     it "gets blocked by the gateline if the balance is below minimum" do
-      expect{ card.touch_in}.to raise_error("Access denied. Card balance below min.")
+      expect{ card.touch_in(station)}.to raise_error("Access denied. Card balance below min.")
     end
 
     it "reduces the card balance by 1.00 when card touches out" do
@@ -35,14 +36,30 @@ describe Oystercard do
 
     it "allows you to touch in to start a journey" do
       card.top_up(Oystercard::MIN_BALANCE)
-      card.touch_in
+      card.touch_in(station)
       expect(card.in_journey?).to eq true
     end
 
-    it "allows you to touch out to end a journey" do
+    xit "allows you to touch out to end a journey" do
       card.touch_out
       expect(card.in_journey?).to eq false
     end
+  end
+
+  context "journey details" do
+    it "remembers the station it touched in at" do
+      card.top_up(Oystercard::MIN_BALANCE)
+      card.touch_in(station)
+      expect(card.origin_station).to eq(station)
+    end
+
+    it "sets the origin station nil when touched out" do
+      card.top_up(Oystercard::MIN_BALANCE)
+      card.touch_in(station)
+      card.touch_out
+      expect(card.origin_station).to eq(nil)
+    end
+
   end
 
 end
