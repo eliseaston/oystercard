@@ -7,12 +7,13 @@ describe Journey do
   let(:station2) { double :station2 }
 
   context "balance on card" do
-    it "gets blocked by the gateline if the balance is below minimum" do
-      expect{ journey.touch_in(card, station)}.to raise_error("Access denied. Card balance below min.")
+    it "cannot touch in if card balance is below minimum" do
+      expect{ journey.touch_in(card, station)}.to raise_error("Not enough credit to travel")
     end
 
     it "reduces the card balance by 1.00 when card touches out" do
-      expect{ journey.touch_out(card, station2)}.to change{card.balance}.by(-1)
+      fare = -1
+      expect{ journey.touch_out(card, station2)}.to change{card.balance}.by(fare)
     end
   end
 

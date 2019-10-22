@@ -1,4 +1,4 @@
-require 'oystercard'
+require './lib/oystercard.rb'
 
 class Journey
 
@@ -6,6 +6,7 @@ class Journey
 
   def initialize
     @journey_history = {}
+    @fare = 1
   end
 
   def in_journey?
@@ -13,12 +14,12 @@ class Journey
   end
 
   def touch_in(card, origin_station)
-    fail "Access denied. Card balance below min." unless card.balance >= Oystercard::MIN_BALANCE
+    fail "Not enough credit to travel" if card.balance < Oystercard::MIN_BALANCE
     @origin_station = origin_station
   end
 
   def touch_out(card, dest_station)
-    card.deduct(1)
+    card.deduct(@fare)
     @dest_station = dest_station
     save_journey_history
   end

@@ -4,8 +4,6 @@ require 'journey'
 describe Oystercard do
   let(:card) {Oystercard.new}
   let(:journey) {Journey.new}
-  let(:station) { double :station }
-  let(:station2) { double :station2 }
 
   context "balance on card" do
     it "has a balance" do
