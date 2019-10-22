@@ -18,8 +18,6 @@ class Oystercard
     @balance = new_balance
   end
 
-
-
   def in_journey?
     !!@origin_station
   end
@@ -46,7 +44,6 @@ private
 
  def save_journey_history
    @journey_history.store(@origin_station, @dest_station)
-
  end
 
 
