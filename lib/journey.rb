@@ -1,11 +1,11 @@
-require './lib/oystercard.rb'
+require_relative 'oystercard'
 
 class Journey
 
-  attr_reader :journey_history, :origin_station, :dest_station
+  attr_reader :current_journey, :origin_station, :dest_station
 
   def initialize
-    @journey_history = {}
+    @current_journey = {}
     @fare = 1
   end
 
@@ -19,16 +19,18 @@ class Journey
   end
 
   def touch_out(card, dest_station)
-    card.deduct(@fare)
-    @dest_station = dest_station
-    save_journey_history
+    save_journey_history(card, dest_station)
   end
 
-  private
+  # private
 
-  def save_journey_history
-    @journey_history.store(@origin_station, @dest_station)
+  def save_journey_history(card, dest_station)
+    @dest_station = dest_station
+    @current_journey = {@origin_station => @dest_station}
+    card.deduct(@fare)
+    card.journey_history << @current_journey
     @origin_station = nil
+    @dest_station = nil
   end
 
 end

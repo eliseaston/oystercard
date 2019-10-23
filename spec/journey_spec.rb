@@ -30,13 +30,13 @@ describe Journey do
 
       it "remembers the station it touched out at" do
         journey.touch_out(card, station2)
-        expect(journey.dest_station).to eq(station2)
+        expect(card.journey_history[-1].values).to eq(station2)
       end
     end
 
   context "journey details" do
     it "has an empty journey history when card is spawned" do
-      expect(journey.journey_history).to be_empty
+      expect(journey.current_journey).to be_empty
     end
 
    before(:each) do
@@ -55,7 +55,7 @@ describe Journey do
 
     it "has the origin and destination stations of one trip recorded" do
       journey.touch_out(card, station2)
-      expect(journey.journey_history).to eq({station => station2})
+      expect(journey.current_journey).to eq({station => station2})
     end
 
   end

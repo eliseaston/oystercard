@@ -3,10 +3,11 @@ class Oystercard
   BALANCE_LIMIT = 90
   MIN_BALANCE = 1
 
-  attr_reader :balance
+  attr_reader :balance, :journey_history
 
   def initialize
     @balance = 0
+    @journey_history = []
   end
 
   def top_up(credit)
